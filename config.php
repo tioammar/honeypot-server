@@ -2,7 +2,7 @@
 
 // MySQL
 $host = 'localhost';
-$user = '';
+$user = 'root';
 $pass = '';
 $name = 'dbhoneypot';
 
