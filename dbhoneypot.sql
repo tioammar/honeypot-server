@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.5
+-- version 4.2.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 10, 2014 at 10:35 AM
--- Server version: 10.0.12-MariaDB-log
--- PHP Version: 5.5.14
+-- Generation Time: Aug 14, 2014 at 03:41 PM
+-- Server version: 10.0.13-MariaDB-log
+-- PHP Version: 5.5.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -208,6 +208,15 @@ CREATE TABLE IF NOT EXISTS `malware_download` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `os_used`
+--
+CREATE TABLE IF NOT EXISTS `os_used` (
+`ipx` text
+,`os` text
+);
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `p0f_fingerprint`
 --
 
@@ -260,6 +269,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `malware_download`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `malware_download` AS select `dionaea_connections`.`connection` AS `connection1`,`dionaea_connections`.`remote_ip` AS `remote_ip`,`dionaea_downloads`.`connection` AS `connection`,`dionaea_downloads`.`download_url` AS `download_url`,`dionaea_downloads`.`download_md5_hash` AS `download_md5_hash` from (`dionaea_connections` join `dionaea_downloads`) where (`dionaea_connections`.`connection` = `dionaea_downloads`.`connection`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `os_used`
+--
+DROP TABLE IF EXISTS `os_used`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `os_used` AS select `common_ip`.`ipx` AS `ipx`,`p0f_fingerprint`.`os` AS `os` from (`common_ip` join `p0f_fingerprint`) where (`common_ip`.`ipx` = `p0f_fingerprint`.`ip`);
 
 --
 -- Indexes for dumped tables
