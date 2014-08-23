@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 14, 2014 at 03:41 PM
+-- Generation Time: Aug 23, 2014 at 07:29 AM
 -- Server version: 10.0.13-MariaDB-log
 -- PHP Version: 5.5.15
 
@@ -49,6 +49,15 @@ CREATE TABLE IF NOT EXISTS `common_ip` (
 CREATE TABLE IF NOT EXISTS `common_port` (
 `portx` int(11)
 ,`ipx` text
+);
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `country_hit`
+--
+CREATE TABLE IF NOT EXISTS `country_hit` (
+`hits` bigint(21)
+,`country_name` varchar(25)
 );
 -- --------------------------------------------------------
 
@@ -228,6 +237,15 @@ CREATE TABLE IF NOT EXISTS `p0f_fingerprint` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `port_hit`
+--
+CREATE TABLE IF NOT EXISTS `port_hit` (
+`hits` bigint(21)
+,`portx` int(11)
+);
+-- --------------------------------------------------------
+
+--
 -- Structure for view `auth_profile`
 --
 DROP TABLE IF EXISTS `auth_profile`;
@@ -255,6 +273,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `country_hit`
+--
+DROP TABLE IF EXISTS `country_hit`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `country_hit` AS select count(`geoip`.`country_name`) AS `hits`,`geoip`.`country_name` AS `country_name` from `geoip` group by `geoip`.`country_name` order by count(`geoip`.`country_name`) desc;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `input_profile`
 --
 DROP TABLE IF EXISTS `input_profile`;
@@ -278,6 +305,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `os_used`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `os_used` AS select `common_ip`.`ipx` AS `ipx`,`p0f_fingerprint`.`os` AS `os` from (`common_ip` join `p0f_fingerprint`) where (`common_ip`.`ipx` = `p0f_fingerprint`.`ip`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `port_hit`
+--
+DROP TABLE IF EXISTS `port_hit`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `port_hit` AS select count(`common_port`.`portx`) AS `hits`,`common_port`.`portx` AS `portx` from `common_port` group by `common_port`.`portx` order by count(`common_port`.`portx`) desc;
 
 --
 -- Indexes for dumped tables
