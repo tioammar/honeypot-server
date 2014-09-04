@@ -1,4 +1,4 @@
-HoneyServer
+Server
 ===========
 
 Skripsi!
